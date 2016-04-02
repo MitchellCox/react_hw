@@ -66,9 +66,7 @@
          }
 
          render() {
-            return(<div className='col s12'>
-                            <div className="row">
-                              <div className="col s12 m3">
+            return(<div className="col s12 m4">
                                  <div className="card blue lighten-4">
                                     <div >
                                        <p><b>Note:</b></p>
@@ -77,9 +75,7 @@
                                     <br />
                                     <button onClick={() => this.props.deleteNote(this.props.id)} className='btn red'>Delete</button>
                                  </div>
-                              </div>   
-                           </div>
-                        </div>);
+                              </div>);
          }
       }
 
