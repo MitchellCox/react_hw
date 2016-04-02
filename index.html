@@ -1,0 +1,89 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+	<head>
+ 		<meta charset="utf-8" />
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.5/react.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.5/react-dom.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+ 		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+ 		<link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" />
+ 	</head>
+ 	<body>
+   	<div id='content' class='container'>
+   	</div>
+   	<script type='text/babel'>
+   		class PostIt extends React.Component {
+   			constructor(props) {
+   				super(props);
+               this.addNote = this.addNote.bind(this);
+               this.notes = this.notes.bind(this); 
+               this.deleteNote = this.deleteNote.bind(this); 
+               this.state = {notes: [], urgent: 0}; 
+   			}
+
+            addNote(e) {
+            e.preventDefault(); 
+            let notes = this.state.notes; 
+            notes.push({name: this.refs.noteName.value});
+            this.refs.noteName.value = ''; 
+            this.setState({notes: notes})
+         }
+
+         deleteNote(id) {
+            let notes = this.state.notes; 
+            notes.splice(id, 1); 
+            this.setState({notes: notes}); 
+         }
+
+         notes(e) { 
+            let notes = [];
+            this.state.notes.map( (note, index) => {
+               notes.push(<Note key={index} id={index} name={note.name} deleteNote={this.deleteNote} />); 
+            });
+            return notes; 
+         }
+
+   			render() {
+   				return(<div className='center'>
+   									<h1>{this.props.title}</h1>
+                              <form onSubmit={this.addNote}>
+                                 <input type='text' placeholder='Note' ref='noteName' />
+                                 <input type='submit' className='btn' value='Add Note' />
+                              </form>
+                              <div className='row'>
+                                 {this.notes()}
+                              </div>
+   								</div>);
+   			}
+   		}
+
+         class Note extends React.Component {
+         constructor(props) {
+            super(props); 
+         }
+
+         render() {
+            return(<div className='col s12'>
+                            <div className="row">
+                              <div className="col s12 m3">
+                                 <div className="card blue lighten-4">
+                                    <div >
+                                       <p><b>Note:</b></p>
+                                       {this.props.name}
+                                    </div>
+                                    <br />
+                                    <button onClick={() => this.props.deleteNote(this.props.id)} className='btn red'>Delete</button>
+                                 </div>
+                              </div>   
+                           </div>
+                        </div>);
+         }
+      }
+
+         ReactDOM.render(<PostIt title='Notes' />,  document.getElementById('content'));
+ 		</script>
+	</body>
+</html>
